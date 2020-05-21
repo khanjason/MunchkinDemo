@@ -12,11 +12,14 @@ namespace MunchkinDemo
 {
     public partial class Form1 : Form
     {
+        Color labelcolor = System.Drawing.ColorTranslator.FromHtml("#ECEFF2");
+
         private Label Title;
         ListBox presentBox;
         private string version = "V0.1";
         BindingList<string> registeredList = new BindingList<string>();
         ListBox registeredBox;
+        BindingList<string> presentList = new BindingList<string>();
 
         public Form1()
         {
@@ -34,7 +37,7 @@ namespace MunchkinDemo
             Title = new Label();
             Title.Text = "MUNchkin" + " "+version;
             Title.Font = new Font("Berlin Sans FB", 54f);
-            Title.Size = new Size(500, this.Width);
+            Title.Size = new Size(this.Width,80);
             Title.ForeColor = Titlecolor;
             Color background = System.Drawing.ColorTranslator.FromHtml("#7EA5DF");
             Title.Location = new Point(this.Width, 25);
@@ -44,14 +47,14 @@ namespace MunchkinDemo
             this.BackColor = background;
             this.Controls.Add(Title);
             AddRegisterlistbox();
+           
         }
 
         void AddRegisterlistbox()
         {
             
 
-            Color labelcolor = System.Drawing.ColorTranslator.FromHtml("#ECEFF2");
-            Color buttonColor = ColorTranslator.FromHtml("#3068BD");
+               Color buttonColor = ColorTranslator.FromHtml("#3068BD");
 
             Label caption1 = new Label();
             caption1.Text = "Available Delegations";
@@ -91,6 +94,7 @@ namespace MunchkinDemo
             checkRegisterButton.ForeColor = labelcolor;
             checkRegisterButton.BackColor = buttonColor;
             checkRegisterButton.Location = new Point(registeredBox.Location.X, registeredBox.Location.Y + registeredBox.Height);
+            checkRegisterButton.Click += new System.EventHandler(this.SetCheckOffRegister);
             this.Controls.Add(checkRegisterButton);
 
             Button deleteFromRegisterButton = new Button();
@@ -127,9 +131,109 @@ namespace MunchkinDemo
 
         }
 
-        void CheckOffRegister()
+        void SetCheckOffRegister(object sender, EventArgs e)
         {
+            int labelX = 450;
+            int labelY = 250;
 
+            Label[] registerTextList = new Label[registeredList.Count];
+            for (int t = 0; t < registeredList.Count; t++)
+            {
+               registerTextList[t] = new Label();
+            }
+
+            int counter = 0;
+
+            while (counter < registeredList.Count)
+            {
+
+                registerTextList[counter].Tag = counter + 1;
+                registerTextList[counter].Width = 110;
+                registerTextList[counter].Height = 40;
+
+
+                registerTextList[counter].Location = new Point(labelX, labelY);
+
+                
+
+                labelY = labelY + registerTextList[counter].Height;
+                
+                registerTextList[counter].Text = registeredList[counter];
+
+                this.Controls.Add(registerTextList[counter]);
+                counter++;
+
+
+            }
+        
+
+            Label RegisterTitle = new Label();
+            RegisterTitle.Text = "Present";
+            RegisterTitle.Font = new Font("Berlin Sans FB", 22f);
+            RegisterTitle.Size = new Size(120, 80);
+            RegisterTitle.Location= new Point(700, registeredBox.Location.Y - registeredBox.Height);
+            RegisterTitle.ForeColor = labelcolor;
+            this.Controls.Add(RegisterTitle);
+
+            Button[] PresentbtnArr = new Button[registeredList.Count];
+            int x = 700;
+            int y = 250;
+
+            for (int i = 0; i < registeredList.Count; i++)
+            {
+                PresentbtnArr[i] = new Button();
+            }
+            int n = 0;
+
+            while (n < registeredList.Count)
+            {
+                PresentbtnArr[n].Tag = n + 1; 
+                PresentbtnArr[n].Width = 40; 
+                PresentbtnArr[n].Height = 40; 
+                
+                
+                PresentbtnArr[n].Left = x;
+                PresentbtnArr[n].Top = y;
+                
+                this.Controls.Add(PresentbtnArr[n]); 
+
+                y = y + PresentbtnArr[n].Height;
+                PresentbtnArr[n].BackColor = Color.Gray;
+                PresentbtnArr[n].Text = "";
+
+               
+                PresentbtnArr[n].Click += new System.EventHandler(MakePresent);
+                n++;
+            }
+           
         }
+
+
+
+        void MakePresent(object sender, EventArgs e)
+        {
+            Button thisbut = sender as Button;
+            if (thisbut != null)
+            {
+                if (thisbut.BackColor == Color.Gray)
+                {
+                    thisbut.BackColor = Color.LimeGreen;
+
+                    presentList.Add(registeredList[Int16.Parse(thisbut.Tag.ToString()) - 1]);
+                    
+                }
+                else if (thisbut.BackColor == Color.LimeGreen)
+                {
+                    thisbut.BackColor = Color.Gray;
+                    presentList.Remove(registeredList[Int16.Parse(thisbut.Tag.ToString()) - 1]);
+                }
+
+
+            }
+        }
+
+
+
     }
 }
+
