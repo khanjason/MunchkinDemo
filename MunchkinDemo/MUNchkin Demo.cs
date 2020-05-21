@@ -16,6 +16,7 @@ namespace MunchkinDemo
         ListBox presentBox;
         private string version = "V0.1";
         BindingList<string> registeredList = new BindingList<string>();
+        ListBox registeredBox;
 
         public Form1()
         {
@@ -72,7 +73,7 @@ namespace MunchkinDemo
             caption2.Size = new Size(250, 180);
             caption2.ForeColor = labelcolor;
 
-            ListBox registeredBox = new ListBox();
+            registeredBox = new ListBox();
             registeredBox.DataSource = registeredList;
             registeredBox.Size = new Size(200, 100);
             registeredBox.Location = new Point(270, 250);
@@ -84,6 +85,21 @@ namespace MunchkinDemo
             addtoRegisterButton.BackColor = buttonColor;
             addtoRegisterButton.Location = new Point(presentBox.Location.X, presentBox.Location.Y + presentBox.Height);
             addtoRegisterButton.Click += new System.EventHandler(this.AddToRegister);
+
+            Button checkRegisterButton = new Button();
+            checkRegisterButton.Text = "Start";
+            checkRegisterButton.ForeColor = labelcolor;
+            checkRegisterButton.BackColor = buttonColor;
+            checkRegisterButton.Location = new Point(registeredBox.Location.X, registeredBox.Location.Y + registeredBox.Height);
+            this.Controls.Add(checkRegisterButton);
+
+            Button deleteFromRegisterButton = new Button();
+            deleteFromRegisterButton.Text = "Delete";
+            deleteFromRegisterButton.ForeColor = labelcolor;
+            deleteFromRegisterButton.BackColor = buttonColor;
+            deleteFromRegisterButton.Location = new Point(registeredBox.Location.X+80, registeredBox.Location.Y + registeredBox.Height);
+            deleteFromRegisterButton.Click += new System.EventHandler(this.DeleteFromRegister);
+            this.Controls.Add(deleteFromRegisterButton);
 
 
             this.Controls.Add(addtoRegisterButton);
@@ -99,6 +115,20 @@ namespace MunchkinDemo
         {
             string curItem = presentBox.SelectedItem.ToString();
             registeredList.Add(curItem);
+
+        }
+
+        void DeleteFromRegister(object sender, EventArgs e)
+        {
+            string curItem = registeredBox.SelectedItem.ToString();
+            
+            registeredList.Remove(curItem);
+            registeredBox.Refresh();
+
+        }
+
+        void CheckOffRegister()
+        {
 
         }
     }
