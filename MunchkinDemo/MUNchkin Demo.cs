@@ -12,7 +12,10 @@ namespace MunchkinDemo
 {
     public partial class Form1 : Form
     {
+        Panel navbar =new Panel();
+
         Color labelcolor = System.Drawing.ColorTranslator.FromHtml("#ECEFF2");
+        Color navcolor = ColorTranslator.FromHtml("#3068BD");
 
         private Label Title;
         ListBox presentBox;
@@ -33,6 +36,12 @@ namespace MunchkinDemo
 
         void SetUpUI()
         {
+            
+            navbar.Size= new Size(200,this.Height*2);
+            navbar.Location = new Point(this.Size.Width*2+105, 0);
+            navbar.BackColor = navcolor;
+            this.Controls.Add(navbar);
+
             Color Titlecolor = System.Drawing.ColorTranslator.FromHtml("#ECEFF2");
             Title = new Label();
             Title.Text = "MUNchkin" + " "+version;
@@ -42,12 +51,14 @@ namespace MunchkinDemo
             Color background = System.Drawing.ColorTranslator.FromHtml("#7EA5DF");
             Title.Location = new Point(this.Width, 25);
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+
             
 
             this.BackColor = background;
             this.Controls.Add(Title);
             AddRegisterlistbox();
-           
+            SetUpNavBar();
+
         }
 
         void AddRegisterlistbox()
@@ -230,6 +241,50 @@ namespace MunchkinDemo
 
 
             }
+        }
+
+
+        void SetUpNavBar()
+        {
+            Button[] navbuttons = new Button[5];
+            string[] navValues = { "Registration", "General Speakers", "Moderated Caucus", "Unmoderated Caucus", "Voting" };
+            int x = navbar.Location.X;
+            int y = navbar.Location.Y;
+            for (int i = 0; i < 5; i++)
+            {
+                navbuttons[i] = new Button();
+                navbuttons[i].Text = navValues[i];
+               
+            
+
+            
+           
+                navbuttons[i].Tag = i + 1;
+                navbuttons[i].Width = 80;
+                navbuttons[i].Height = 60;
+
+
+                navbuttons[i].Left = x;
+                navbuttons[i].Top = y;
+
+                
+
+                y = y + navbuttons[i].Height;
+                navbuttons[i].BackColor = Color.White;
+
+                navbar.Controls.Add(navbuttons[i]);
+
+
+            }
+
+
+
+        }
+
+        void ClearScreen()
+        {
+            presentBox.Hide();
+            registeredBox.Hide();
         }
 
 
